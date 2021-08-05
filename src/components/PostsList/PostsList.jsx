@@ -14,7 +14,7 @@ export const PostsList = ({ posts, onPostDelete }) => (
         </tr>
       </thead>
       <tbody>
-        {posts.map(post => (
+        {posts.map((post) => (
           <tr key={post.id} className="table-light">
             <th scope="row">{post.id}</th>
             <td>{post.title}</td>
