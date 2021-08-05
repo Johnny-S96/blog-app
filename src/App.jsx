@@ -1,20 +1,21 @@
 import './App.css';
-import { useEffect, useState } from 'react';
-import { getAllPosts } from './api/posts';
-import { PostsList } from './components/PostsList';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import { HomePage } from './pages/Homepage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { PostDetailsPage } from './pages/PostDetailsPage';
 
-function App() {
-  const [posts, setPosts] = useState([]);
+export const App = () => (
+  <div className="App">
+    <Switch>
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+      <Route path="/post-details/:postId">
+        <PostDetailsPage />
+      </Route>
+      <Redirect path="/home" to="/" />
 
-  useEffect(() => {
-    getAllPosts().then(posts => setPosts(posts));
-  }, []);
-
-  return (
-    <div className="App">
-      <PostsList posts={posts} />
-    </div>
-  );
-}
-
-export default App;
+      <NotFoundPage />
+    </Switch>
+  </div>
+);
