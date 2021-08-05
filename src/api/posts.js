@@ -1,17 +1,26 @@
 import { getData, BASE_URL } from './api';
 
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
 export const getAllPosts = () => getData('/posts')
   .catch(() => []);
 
 export const addPost = async(post) => {
-  await fetch(`${BASE_URL}/posts`, {
-    method: 'Post',
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
     body: JSON.stringify(post),
-  });
+    redirect: 'follow'
+  };
+
+  await fetch(`${BASE_URL}/posts`, requestOptions);
 };
 
 export const deletePost = async(postId) => {
-  await fetch(`${BASE_URL}/posts/${postId}`, {
+  const requestOptions = {
     method: 'DELETE',
-  });
+  };
+
+  await fetch(`${BASE_URL}/posts/${postId}`, requestOptions);
 };

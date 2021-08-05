@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Homepage.css';
-import { getAllPosts, addPost } from '../../api/posts';
+import { getAllPosts, addPost, deletePost } from '../../api/posts';
 import { PostsList } from '../../components/PostsList';
 import { Loader } from '../../components/Loader';
 
@@ -19,24 +19,23 @@ export const HomePage = () => {
     });
   }, [isPostListChanged]);
 
-  const onPostAdd = event => {
+  const onPostAdd = async(event) => {
     event.preventDefault();
-    switchPostListStatus(!isPostListChanged);
-    
+
     const newPost = {
       title: newPostTitle,
       body: newPostBody
     };
 
-    addPost(newPost);
+    await addPost(newPost);
+    switchPostListStatus(!isPostListChanged);
+    setPostTitle('');
+    setPostBody('');
   }
 
-  const handlePostTitleChange = ({ target }) => {
-    setPostTitle(target.value);
-  }
-
-  const handlePostBodyChange = ({ target }) => {
-    setPostBody(target.value);
+  const onPostDelete = async(postId) => {
+    await deletePost(postId);
+    switchPostListStatus(!isPostListChanged);
   }
 
   return (
@@ -50,7 +49,8 @@ export const HomePage = () => {
             className="form-control"
             placeholder="Write here..."
             value={newPostTitle}
-            onChange={event => handlePostTitleChange(event)}
+            onChange={event => setPostTitle(event.target.value)}
+            required
           />
         </div>
         <div className="input-group">
@@ -59,7 +59,8 @@ export const HomePage = () => {
             className="form-control"
             placeholder="Write here..."
             value={newPostBody}
-            onChange={event => handlePostBodyChange(event)}
+            onChange={event => setPostBody(event.target.value)}
+            required
           ></textarea>
         </div>
         <button className="btn btn-success">
@@ -72,8 +73,7 @@ export const HomePage = () => {
           : (
             <PostsList
               posts={posts}
-              isPostListChanged={isPostListChanged}
-              switchPostListStatus={switchPostListStatus}
+              onPostDelete={onPostDelete}
             />
           )
       }
