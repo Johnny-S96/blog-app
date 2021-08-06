@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './UpdateForm.css'
 
 export const UpdateForm = ({ formPurpose, onSubmit }) => {
   const [newPostTitle, setPostTitle] = useState('');

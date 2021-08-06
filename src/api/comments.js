@@ -1,18 +1,15 @@
-import { BASE_URL, getData } from './api';
+import { BASE_URL } from './api';
 
-export const getPostComments = postId => getData('/comments')
-  .then(comments => comments.filter(comment => comment.postId === postId))
-  .catch(() => []);
-
-export const removeComment = async(commentId) => {
-  await fetch(`${BASE_URL}/comments/${commentId}`, {
-    method: 'DELETE',
-  });
-};
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
 export const addComment = async(comment) => {
-  await fetch(`${BASE_URL}/comments`, {
-    method: 'Post',
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
     body: JSON.stringify(comment),
-  });
+    redirect: 'follow'
+  };
+
+  await fetch(`${BASE_URL}/comments`, requestOptions);
 };
